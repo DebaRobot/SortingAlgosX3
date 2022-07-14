@@ -1,0 +1,41 @@
+void bubbleSort(vector<int>& arr, int n)
+{   
+    for(int i = 1; i< n; i++){
+        for(int  j = 0; j< n- i; j++){
+            if(arr[j] > arr[j + 1]){
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+-------------------------------------------------------
+
+void selectionSort(vector<int>& arr, int n)
+{   
+    for(int i = 0; i < n - 1 ; i++){
+        int minIndex = i;
+        for(int j = i + 1; j < n; j++){
+            if(arr[j] < arr[minIndex])
+                minIndex = j;
+        }
+        swap(arr[minIndex], arr[i]);
+    }
+}
+------------------------------------------------------------------
+
+void insertionSort(int n, vector<int> &arr){
+    for(int i = 1; i< n; i++){
+        int temp = arr[i];
+        int j = i - 1;
+        for(; j>=0 ; j--){
+            if(arr[j] > temp){
+                arr[j + 1] = arr[j];
+                
+            }
+            else{
+                break;
+            }
+        }
+        arr[j + 1] = temp;
+    }
+}
