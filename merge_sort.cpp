@@ -1,67 +1,72 @@
-#include<iostream>
-using namespace std;
 
-void merge(int arr[], int l, int mid, int r){
-    
-    int n1 =  mid-l + 1;
-    int n2 =  r - mid;
-    int a[n1];
-    int b[n2];
-    
-    for(int i = 0; i<n1; i++){
-        a[i]= arr[l+i];
+void merge(vector < int > & arr, int s, int e) {
+
+    int mid = (s+e)/2;
+
+    int len1 = mid - s + 1;
+    int len2 = e - mid;
+
+    int *first = new int[len1];
+    int *second = new int[len2];
+
+    //copy values
+    int mainArrayIndex = s;
+    for(int i=0; i<len1; i++) {
+        first[i] = arr[mainArrayIndex++];
     }
-    
-    for(int j = 0; j<n2; j++){
-        b[j] = arr[mid + 1 + j];
+
+    mainArrayIndex = mid+1;
+    for(int i=0; i<len2; i++) {
+        second[i] = arr[mainArrayIndex++];
     }
-    
-    int i = 0;
-    int j = 0;
-    int k = l;
-    while(i < n1 && j < n2){
-        if(a[i] < b[j]){
-            arr[k] = a[i];
-            k++;
-            i++;
+
+    //merge 2 sorted arrays     
+    int index1 = 0;
+    int index2 = 0;
+    mainArrayIndex = s;
+
+    while(index1 < len1 && index2 < len2) {
+        if(first[index1] < second[index2]) {
+            arr[mainArrayIndex++] = first[index1++];
         }
         else{
-            arr[k] = b[j];
-            k++;
-            j++;
+            arr[mainArrayIndex++] = second[index2++];
         }
+    }   
+
+    while(index1 < len1) {
+        arr[mainArrayIndex++] = first[index1++];
     }
-    while(i < n1){
-        arr[k] = a[i];
-        k++;
-        i++;
+
+    while(index2 < len2 ) {
+        arr[mainArrayIndex++] = second[index2++];
     }
-    while(j < n2){
-        arr[k] = b[j];
-        k++;
-        j++;
-    }
-     
+
+    delete []first;
+    delete []second;
+
 }
 
-void mergeSort(int arr[], int l, int r){
-    if(l < r){
-        int mid = (l + r)/2;
-        mergeSort(arr, l, mid);
-        mergeSort(arr, mid +1, r);
-        
-        merge(arr, l, mid, r)
-    
+void solve(vector < int > & arr, int s, int e) {
+
+    //base case
+    if(s >= e) {
+        return;
     }
+    
+    int mid = (s+e)/2;
+
+    //left part sort karna h 
+    solve(arr, s, mid);
+    
+    //right part sort karna h 
+    solve(arr, mid+1, e);
+
+    //merge
+    merge(arr, s, e);
+
 }
 
-int main(){
-    int arr[] = {5, 4, 3, 2, 1};
-    mergeSort(arr, 0, 4);
-    for(int i = 0; i<5;i++){
-        cout<<arr[i]<<" ";
-    }
-    cout<<endl;
-    
-    return 0;
+void mergeSort(vector < int > & arr, int n) {
+    solve(arr, 0, n-1);
 }
